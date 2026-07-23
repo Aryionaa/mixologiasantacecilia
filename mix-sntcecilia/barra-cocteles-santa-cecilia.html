@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barra de Cócteles — Aceary Solutions</title>
+<meta name="description" content="Pide tus cócteles frozen para tu evento. Arma tu carrito y envía tu pedido por WhatsApp o correo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+      <link rel="icon" type="image/png" sizes="32x32" href="santa-cecilia.png">
+<style>
+  :root{
+    --dorado: #D4AF37;
+    --dorado-claro: #F0D678;
+    --dorado-oscuro: #A8842A;
+    --negro: #14110B;
+    --blanco: #FFFFFF;
+    --crema: #FFFBF0;
+    --rojo-feria: #C2402B;
+    --verde-feria: #3E7D5A;
+    --azul-feria: #2E6E8E;
+    --font-titulo: 'Bungee', cursive;
+    --font-cuerpo: 'Fredoka', sans-serif;
+    --font-alt: 'Montserrat', sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family: var(--font-cuerpo);
+    background: var(--crema);
+    color: var(--negro);
+  }
+  a{ text-decoration:none; color:inherit; }
+  img{ max-width:100%; display:block; }
+  h1,h2,h3{ font-family: var(--font-titulo); margin:0; }
+
+  /* --- bunting / papel picado decorativo --- 
+  .bunting{
+    display:flex;
+    justify-content:center;
+    overflow:hidden;
+    line-height:0;
+  }
+  .bunting span{
+    width: 26px; height: 34px;
+    margin: 0 3px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    flex-shrink:0;
+  }
+  .bunting span:nth-child(6n+1){ background: var(--dorado); }
+  .bunting span:nth-child(6n+2){ background: var(--blanco); border:1px solid #1b1818; }
+  .bunting span:nth-child(6n+3){ background: var(--rojo-feria); }
+  .bunting span:nth-child(6n+4){ background: var(--verde-feria); }
+  .bunting span:nth-child(6n+5){ background: var(--negro); }
+  .bunting span:nth-child(6n+6){ background: var(--azul-feria); }
+*/
+  /* --- bunting / papel picado decorativo --- */
+  .bunting{
+    display:flex;
+    justify-content:center;
+    gap:2px;
+    padding-top:14px;
+    overflow:hidden;
+    user-select:none;
+  }
+  .bunting span{
+    width:46px; height:38px;
+    background: var(--dorado);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    position:relative;
+    opacity:0.9;
+    animation: sway 4.5s ease-in-out infinite;
+    transform-origin: top center;
+    flex-shrink:0;
+  }
+  .bunting span::before{
+    content:"";
+    position:absolute; inset:4px 4px 12px 4px;
+    background-image: radial-gradient(circle, var(--negro) 2px, transparent 2.4px);
+    background-size: 8px 8px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    opacity:0.55;
+  }
+  .bunting span:nth-child(3n){ background: var(--rojo-feria); animation-delay:.3s; }
+  .bunting span:nth-child(3n+1){ background: var(--verde-feria); animation-delay:.6s; }
+  .bunting span:nth-child(5n){ background: var(--azul-feria); animation-delay:.9s; }
+
+  @keyframes sway{
+    0%,100%{ transform: rotate(-3deg); }
+    50%{ transform: rotate(3deg); }
+  }
+  @media (prefers-reduced-motion: reduce){ .bunting span{ animation:none; } }
+  /* --- header --- */
+  header{
+    background: var(--negro);
+    color: var(--dorado-claro);
+    padding: 16px 0 0;
+    position: sticky;
+    top:0;
+    z-index: 40;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  }
+  .header-inner{
+    max-width: 1100px;
+    margin:0 auto;
+    padding: 6px 22px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 16px;
+    flex-wrap:wrap;
+  }
+  .marca{
+    font-family: var(--font-titulo);
+    font-size: 1.15rem;
+    color: var(--dorado);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .marca img{
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .marca small{
+    display:block;
+    font-family: var(--font-alt);
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    color: #E7DFC4;
+    font-weight:600;
+  }
+  .btn-carrito{
+    background: var(--dorado);
+    color: var(--negro);
+    border: none;
+    border-radius: 999px;
+    padding: 11px 20px;
+    font-family: var(--font-alt);
+    font-weight:700;
+    font-size: 0.85rem;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    transition: transform .15s ease;
+  }
+  .btn-carrito:hover{ transform: translateY(-2px); }
+  .badge-cant{
+    background: var(--rojo-feria);
+    color:#fff;
+    border-radius:50%;
+    width:22px; height:22px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 0.72rem;
+    font-family: var(--font-alt);
+  }
+
+  /* --- hero --- */
+  .hero{
+    background:
+      /*radial-gradient(ellipse at 20% 20%, rgba(136, 127, 100, 0.16), transparent 45%),
+     /* radial-gradient(ellipse at 80% 80%, rgba(212,175,55,0.12), transparent 45%),
+      */var(--crema);
+    color: var(--blanco);
+    text-align:center;
+    padding: 20px 22px 20px;
+  }
+  .hero .eyebrow{
+    font-family: var(--font-alt);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--negro);
+    text-transform:uppercase;
+  }
+  .hero h1{
+    font-size: clamp(1.8rem, 4.4vw, 3rem);
+    color: var(--dorado-oscuro);
+    margin: 14px 0 12px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+  }
+  .hero p{
+    max-width: 52ch;
+    margin: 0 auto;
+    color: #554101;
+    font-size: 1.02rem;
+  }
+  .hero-icons{
+    margin-top: 22px;
+    display:flex;
+    justify-content:center;
+    gap: 22px;
+    font-size: 1.5rem;
+    color: var(--dorado);
+    opacity:0.8;
+  }
+
+  /* --- menu --- */
+  main{ max-width: 1100px; margin: 0 auto; padding: 46px 22px 90px; }
+  .menu-titulo{ text-align:center; margin-bottom: 8px; font-size: 1.7rem; color:var(--negro); }
+  .menu-sub{ text-align:center; color:#6E6A5D; font-family: var(--font-alt); font-size:0.88rem; margin-bottom: 40px; }
+
+  .grid-menu{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  @media (max-width: 900px){ .grid-menu{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 600px){ .grid-menu{ grid-template-columns: 1fr; } }
+
+  .cocktail-card{
+    background: var(--blanco);
+    border: 2px solid var(--negro);
+    border-radius: 14px;
+    overflow:hidden;
+    box-shadow: 5px 5px 0 var(--dorado);
+    display:flex;
+    flex-direction:column;
+    transition: transform .18s ease;
+  }
+  .cocktail-card:hover{ transform: translateY(-4px); }
+  .cocktail-foto{
+    aspect-ratio: 5/4;
+    background: linear-gradient(160deg, #1c1710, #2b2013);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color: var(--dorado-claro);
+    overflow:hidden;
+  }
+  .cocktail-foto img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .foto-fallback{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    height:100%;
+  }
+  .cocktail-foto i{ font-size: 2.4rem; color: var(--dorado); }
+  .cocktail-foto span{
+    font-family: var(--font-alt);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform:uppercase;
+    color: #C9BE95;
+  }
+  .cocktail-body{ padding: 18px 18px 20px; display:flex; flex-direction:column; flex:1; }
+  .cocktail-body h3{ font-size: 1.02rem; margin-bottom: 8px; color:var(--negro); }
+  .cocktail-body ul{
+    list-style:none;
+    padding:0; margin:0 0 12px;
+    font-family: var(--font-alt);
+    font-size: 0.76rem;
+    color:#6E6A5D;
+  }
+  .cocktail-body ul li{ margin-bottom:3px; }
+  .cocktail-body ul li::before{ content:"• "; color: var(--dorado-oscuro); }
+  .presentacion{
+    font-family: var(--font-alt);
+    font-size: 0.72rem;
+    color: var(--dorado-oscuro);
+    margin-bottom: 14px;
+  }
+  .precio-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:auto;
+    padding-top: 12px;
+    border-top: 1px dashed #E4DBC0;
+  }
+  .precio{
+    font-family: var(--font-titulo);
+    font-size: 1.15rem;
+    color: var(--rojo-feria);
+  }
+  .qty-control{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family: var(--font-alt);
+    font-weight:700;
+  }
+  .qty-control button{
+    width:28px; height:28px;
+    border-radius:50%;
+    border: 1.5px solid var(--negro);
+    background: var(--blanco);
+    cursor:pointer;
+    font-size: 1rem;
+    line-height:1;
+  }
+  .qty-control button:hover{ background: var(--dorado); }
+  .btn-agregar{
+    margin-top: 12px;
+    width:100%;
+    background: var(--negro);
+    color: var(--dorado-claro);
+    border:none;
+    padding: 11px;
+    border-radius: 8px;
+    font-family: var(--font-alt);
+    font-weight:700;
+    font-size: 0.82rem;
+    letter-spacing:0.03em;
+    cursor:pointer;
+    transition: background .18s ease;
+  }
+  .btn-agregar:hover{ background: #2A2115; }
+  .btn-agregar.agregado{ background: var(--verde-feria); color:#fff; }
+
+  /* --- carrito lateral --- */
+  .overlay-carrito{
+    position: fixed; inset:0;
+    background: rgba(20,17,11,0.55);
+    z-index: 60;
+    opacity:0; pointer-events:none;
+    transition: opacity .25s ease;
+  }
+  .overlay-carrito.abierto{ opacity:1; pointer-events:auto; }
+  .panel-carrito{
+    position: fixed; top:0; right:0; bottom:0;
+    width: min(420px, 100%);
+    background: var(--crema);
+    z-index: 61;
+    transform: translateX(100%);
+    transition: transform .3s ease;
+    display:flex;
+    flex-direction:column;
+  }
+  .panel-carrito.abierto{ transform: translateX(0); }
+  .panel-carrito-head{
+    background: var(--negro);
+    color: var(--dorado-claro);
+    padding: 20px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .panel-carrito-head h3{ font-size:1.1rem; }
+  .cerrar-carrito{ background:none; border:none; color:var(--dorado); font-size:1.4rem; cursor:pointer; }
+  .lista-carrito{ flex:1; overflow-y:auto; padding: 16px 22px; }
+  .item-carrito{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px dashed #E4DBC0;
+  }
+  .item-carrito .nombre{ font-family: var(--font-alt); font-weight:600; font-size:0.9rem; }
+  .item-carrito .subtotal{ font-family: var(--font-alt); font-size:0.8rem; color:#6E6A5D; }
+  .item-carrito .quitar{ background:none; border:none; color: var(--rojo-feria); font-size:1rem; cursor:pointer; }
+  .carrito-vacio{ text-align:center; color:#9A927A; padding: 40px 10px; font-family: var(--font-alt); }
+  .panel-carrito-foot{
+    padding: 18px 22px 24px;
+    border-top: 2px solid var(--negro);
+    background: var(--blanco);
+  }
+  .total-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family: var(--font-alt); margin-bottom: 16px;
+  }
+  .total-row .monto{ font-family: var(--font-titulo); font-size:1.4rem; color: var(--rojo-feria); }
+  .btn-pedido{
+    width:100%;
+    border:none;
+    border-radius: 8px;
+    padding: 13px;
+    font-family: var(--font-alt);
+    font-weight:700;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .btn-pedido.wa{ background:#25D366; color:#fff; }
+  .btn-pedido.mail{ background: var(--dorado); color: var(--negro); }
+  .btn-pedido:disabled{ opacity:0.5; cursor:not-allowed; }
+  #estado-envio{ font-family: var(--font-alt); font-size:0.78rem; margin-top:8px; text-align:center; }
+
+  footer{
+    background: var(--negro);
+    color: #C9BE95;
+    text-align:center;
+    padding: 26px 22px;
+    font-family: var(--font-alt);
+    font-size: 0.8rem;
+  }
+  footer a{ color: var(--dorado); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="marca">
+      <img src="santa-cecilia.png" alt="Logo Aceary Solutions" width="80" height="80" onerror="this.style.display='none';">
+      <span>Mixología Santa Cecilia <small>ACEARY SOLUTIONS S.A. DE C.V. "MULTISERVICIOS"</small></span>
+    </div>
+    <button class="btn-carrito" id="btn-abrir-carrito">
+      <i class="fa-solid fa-cart-shopping"></i> Mi pedido
+      <span class="badge-cant" id="badge-cantidad">0</span>
+    </button>
+  </div>
+  <div class="" id="bunting-top"></div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">Frozen · A las rocas · Del 23 de JUL al 2 de AGO (JUE a DOM) 2:00 pm - 5:30 pm</span>
+  <h1>El sabor que le falta a tu paladar</h1>
+  <p>Elige tus cócteles favoritos, arma tu pedido y lo mandamos directo por WhatsApp o correo. Así de fácil.</p>
+  <div class="hero-icons">
+    <i class="fa-solid fa-blender"></i>
+    <i class="fa-solid fa-champagne-glasses"></i>
+    <i class="fa-solid fa-lemon"></i>
+  </div>
+</section>
+<div class="bunting" id="bunting-mid"></div>
+
+<main>
+  <h2 class="menu-titulo">Nuestro menú</h2>
+  <p class="menu-sub"></p>
+
+  <div class="grid-menu" id="grid-menu"></div>
+</main>
+
+<div class="overlay-carrito" id="overlay-carrito"></div>
+<aside class="panel-carrito" id="panel-carrito">
+  <div class="panel-carrito-head">
+    <h3><i class="fa-solid fa-cart-shopping"></i> Tu pedido</h3>
+    <button class="cerrar-carrito" id="btn-cerrar-carrito" aria-label="Cerrar carrito">&times;</button>
+  </div>
+  <div class="lista-carrito" id="lista-carrito">
+    <div class="carrito-vacio">Aún no agregas cócteles 🍹</div>
+  </div>
+  <div class="panel-carrito-foot">
+    <div class="total-row">
+      <span>Total</span>
+      <span class="monto" id="total-carrito">$0 MXN</span>
+    </div>
+      <!-- 🕒 Hora de recogida -->
+    <div style="margin-bottom:10px;">
+      <label for="hora-recogida" style="font-family:var(--font-alt); font-size:0.8rem; color:var(--negro); font-weight:600; display:block; margin-bottom:4px;">Hora aproximada de recogida,  Ej: 3:05 a.m </label>
+      <input type="time" id="hora-recogida" style="width:100%; padding:9px; border:1.5px solid var(--negro); border-radius:8px; background:var(--blanco); color:var(--negro); font-family:inherit; font-size:0.85rem;">
+    </div>
+      <!-- ✨ NUEVO: Campo para comentarios -->
+    <div style="margin-bottom:14px;">
+      <label for="notas-pedido" style="font-family:var(--font-alt); font-size:0.8rem; color:var(--negro); font-weight:600; display:block; margin-bottom:4px;">Comentarios o indicaciones</label>
+      <textarea id="notas-pedido" placeholder="Ej: Deseo una piña colada sin licor..." style="width:100%; min-height:70px; padding:10px; border:1.5px solid var(--negro); border-radius:8px; background:var(--blanco); color:var(--negro); font-family:inherit; font-size:0.85rem; resize:vertical;"></textarea>
+    </div>
+    <button class="btn-pedido wa" id="btn-pedido-wa" disabled>
+      <i class="fa-brands fa-whatsapp"></i> Enviar pedido por WhatsApp
+    </button>
+    <button class="btn-pedido mail" id="btn-pedido-mail" disabled>
+      <i class="fa-solid fa-envelope"></i> Enviar pedido por correo
+    </button>
+    <div id="estado-envio"></div>
+  </div>
+</aside>
+
+<footer>
+  <p>Aceary Solutions S.A. de C.V. — Pedidos: <a href="tel:9988284867">9988284867</a> · <a href="mailto:familiaenlinea20@gmail.com">familiaenlinea20@gmail.com</a></p>
+  
+  <h2 class="" style="color: red;">"NO CONTAMOS CON ENVIO A DOMICILIO"</h2>
+</footer>
+
+<script>
+// ============ Configuración: EDITA AQUÍ nombres, ingredientes, presentación, foto y precios ============
+// En "imagen" pon el nombre del archivo de foto (ej. "pina-colada.jpg"). Si no existe o no carga,
+// se muestra automáticamente un ícono de respaldo, así que nunca queda un hueco roto.
+const MENU = [
+{ id: "pina-colada", nombre: "Piña Colada", imagen: "coc1.png",
+ingredientes: ["Ron blanco", "Jugo de piña", "Crema de coco", "Hielo"],
+presentacion: "Piña · Cerecita", precio: 35 },
+
+{ id: "pina-colada-vodka", nombre: "Palomo Tamarindo Picante", imagen: "coc2.png",
+ingredientes: ["Vodka de tamarindo picoso", "Refresco de toronja", "Jugo de limon", "Hielo"],
+presentacion: "Rodaja de piña", precio: 35 },
+
+{ id: "tequila-sunrise", nombre: "Tequila Sunrise", imagen: "coc3.png",
+ingredientes: ["Tequila", "Jugo de naranja", "Granadina", "Hielo"],
+presentacion: "Sin escarchado · Rodaja de naranja", precio: 35 },
+
+{ id: "blue-caribbean", nombre: "Blue Caribbean", imagen: "coc6.png",
+ingredientes: ["Ron blanco", "Curazao azul", "Refresco de limón", "Limón", "Hielo"],
+presentacion: "Escarchado de azúcar · Rodaja de limón", precio: 35 },
+
+{ id: "paloma", nombre: "Paloma", imagen: "coc4.png",
+ingredientes: ["Tequila", "Refresco de toronja", "Limón", "Hielo"],
+presentacion: "Escarchado de sal · Rodaja de limón", precio: 25 },
+
+{ id: "charro-negro", nombre: "Charro Negro", imagen: "coc5.png",
+ingredientes: ["Tequila", "Refresco de cola", "Limón", "Hielo"],
+presentacion: "Escarchado de sal (opcional) · Limón", precio: 25 }
+
+
+
+];
+
+const WHATSAPP_NUM = "529984941753"; // 52 = México, sin '+'
+const CORREO_PEDIDOS = "aryionaa@gmail.com";
+
+let carrito = {}; // { id: cantidad }
+function pintarBunting(contenedorId, cantidad){
+  const el = document.getElementById(contenedorId);
+  el.innerHTML = Array.from({length: cantidad}).map(() => "<span></span>").join("");
+}
+
+function pintarMenu(){
+  const grid = document.getElementById("grid-menu");
+  grid.innerHTML = MENU.map(c => `
+    <div class="cocktail-card">
+      <div class="cocktail-foto">
+        <img src="${c.imagen}" alt="${c.nombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="foto-fallback" style="display:none;">
+          <i class="fa-solid fa-martini-glass-citrus"></i>
+          <span>Foto de ${c.nombre}</span>
+        </div>
+      </div>
+      <div class="cocktail-body">
+        <h3>${c.nombre}</h3>
+        <ul>${c.ingredientes.map(i => `<li>${i}</li>`).join("")}</ul>
+        <div class="presentacion"><i class="fa-solid fa-champagne-glasses"></i> ${c.presentacion}</div>
+        <div class="precio-row">
+          <span class="precio">$${c.precio}</span>
+          <div class="qty-control">
+            <button type="button" onclick="cambiarCantidad('${c.id}', -1)">−</button>
+            <span id="cant-${c.id}">0</span>
+            <button type="button" onclick="cambiarCantidad('${c.id}', 1)">+</button>
+          </div>
+        </div>
+        <button type="button" class="btn-agregar" id="btn-add-${c.id}" onclick="agregarAlCarrito('${c.id}')">Agregar al pedido</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function cambiarCantidad(id, delta){
+  const el = document.getElementById(`cant-${id}`);
+  let val = parseInt(el.textContent, 10) + delta;
+  if (val < 0) val = 0;
+  el.textContent = val;
+}
+
+function agregarAlCarrito(id){
+  const cantEl = document.getElementById(`cant-${id}`);
+  const cantidad = parseInt(cantEl.textContent, 10);
+  if (cantidad <= 0) return;
+  carrito[id] = (carrito[id] || 0) + cantidad;
+  cantEl.textContent = 0;
+
+  const btn = document.getElementById(`btn-add-${id}`);
+  btn.textContent = "¡Agregado! ✓";
+  btn.classList.add("agregado");
+  setTimeout(() => { btn.textContent = "Agregar al pedido"; btn.classList.remove("agregado"); }, 1100);
+
+  actualizarCarrito();
+}
+
+function quitarDelCarrito(id){
+  delete carrito[id];
+  actualizarCarrito();
+}
+
+function actualizarCarrito(){
+  const ids = Object.keys(carrito);
+  const badge = document.getElementById("badge-cantidad");
+  const totalItems = ids.reduce((s, id) => s + carrito[id], 0);
+  badge.textContent = totalItems;
+
+  const lista = document.getElementById("lista-carrito");
+  const totalEl = document.getElementById("total-carrito");
+  const btnWa = document.getElementById("btn-pedido-wa");
+  const btnMail = document.getElementById("btn-pedido-mail");
+
+  if (ids.length === 0){
+    lista.innerHTML = `<div class="carrito-vacio">Aún no agregas cócteles 🍹</div>`;
+    totalEl.textContent = "$0 MXN";
+    btnWa.disabled = true;
+    btnMail.disabled = true;
+    return;
+  }
+
+  let total = 0;
+  lista.innerHTML = ids.map(id => {
+    const c = MENU.find(m => m.id === id);
+    const subtotal = c.precio * carrito[id];
+    total += subtotal;
+    return `
+      <div class="item-carrito">
+        <div>
+          <div class="nombre">${c.nombre} × ${carrito[id]}</div>
+          <div class="subtotal">$${subtotal} MXN</div>
+        </div>
+        <button class="quitar" onclick="quitarDelCarrito('${id}')" aria-label="Quitar ${c.nombre}"><i class="fa-solid fa-trash"></i></button>
+      </div>`;
+  }).join("");
+
+  totalEl.textContent = `$${total.toLocaleString("es-MX")} MXN`;
+  btnWa.disabled = false;
+  btnMail.disabled = false;
+}
+
+function construirResumenPedido(){
+  const ids = Object.keys(carrito);
+  let total = 0;
+  const lineas = ids.map(id => {
+    const c = MENU.find(m => m.id === id);
+    const subtotal = c.precio * carrito[id];
+    total += subtotal;
+    return `${c.nombre} × ${carrito[id]} — $${subtotal}`;
+  });
+  return { lineas, total };
+}function enviarPorWhatsApp(){
+  const { lineas, total } = construirResumenPedido();
+  const hora = document.getElementById("hora-recogida").value.trim();
+  const notas = document.getElementById("notas-pedido").value.trim();
+
+  let mensaje = `Hola, quiero hacer este pedido:\n\n${lineas.join("\n")}\n\nTotal: $${total} MXN`;
+  if(hora) mensaje += `\n\n🕒 Hora de recogida: ${hora}`;
+  if(notas) mensaje += `\n\n📝 Comentarios:\n${notas}`;
+
+  window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(mensaje)}`, "_blank", "noopener");
+}
+
+function enviarPorCorreo(){
+  const estado = document.getElementById("estado-envio");
+  const { lineas, total } = construirResumenPedido();
+  const hora = document.getElementById("hora-recogida").value.trim();
+  const notas = document.getElementById("notas-pedido").value.trim();
+
+  let cuerpo = `Nuevo pedido de cócteles:\n\n${lineas.join("\n")}\n\nTotal: $${total} MXN`;
+  if(hora) cuerpo += `\n\n🕒 Hora de recogida: ${hora}`;
+  if(notas) cuerpo += `\n\n📝 Comentarios:\n${notas}`;
+
+  estado.textContent = "Enviando...";
+  fetch(`https://formsubmit.co/ajax/${CORREO_PEDIDOS}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({
+      _subject: "Nuevo pedido de cócteles — Barra Aceary",
+      pedido: cuerpo
+    })
+  })
+  .then(r => r.ok ? estado.textContent = "¡Pedido enviado por correo! Te confirmamos pronto." : Promise.reject())
+  .catch(() => {
+    window.location.href = `mailto:${CORREO_PEDIDOS}?subject=${encodeURIComponent("Nuevo pedido de cócteles")}&body=${encodeURIComponent(cuerpo)}`;
+    estado.textContent = "Abrimos tu correo para completar el envío.";
+  });
+}
+
+// --- panel del carrito ---
+const overlay = document.getElementById("overlay-carrito");
+const panel = document.getElementById("panel-carrito");
+function abrirCarrito(){ overlay.classList.add("abierto"); panel.classList.add("abierto"); }
+function cerrarCarrito(){ overlay.classList.remove("abierto"); panel.classList.remove("abierto"); }
+
+document.getElementById("btn-abrir-carrito").addEventListener("click", abrirCarrito);
+document.getElementById("btn-cerrar-carrito").addEventListener("click", cerrarCarrito);
+overlay.addEventListener("click", cerrarCarrito);
+document.getElementById("btn-pedido-wa").addEventListener("click", enviarPorWhatsApp);
+document.getElementById("btn-pedido-mail").addEventListener("click", enviarPorCorreo);
+
+pintarBunting("bunting-top", 14);
+pintarBunting("bunting-mid", 18);
+pintarMenu();
+actualizarCarrito();
+</script>
+
+</body>
+</html>
