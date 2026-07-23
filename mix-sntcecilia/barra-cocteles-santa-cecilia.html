@@ -36,27 +36,7 @@
   img{ max-width:100%; display:block; }
   h1,h2,h3{ font-family: var(--font-titulo); margin:0; }
 
-  /* --- bunting / papel picado decorativo --- 
-  .bunting{
-    display:flex;
-    justify-content:center;
-    overflow:hidden;
-    line-height:0;
-  }
-  .bunting span{
-    width: 26px; height: 34px;
-    margin: 0 3px;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    flex-shrink:0;
-  }
-  .bunting span:nth-child(6n+1){ background: var(--dorado); }
-  .bunting span:nth-child(6n+2){ background: var(--blanco); border:1px solid #1b1818; }
-  .bunting span:nth-child(6n+3){ background: var(--rojo-feria); }
-  .bunting span:nth-child(6n+4){ background: var(--verde-feria); }
-  .bunting span:nth-child(6n+5){ background: var(--negro); }
-  .bunting span:nth-child(6n+6){ background: var(--azul-feria); }
-*/
-  /* --- bunting / papel picado decorativo --- */
+  /* --- papel picado animado --- */
   .bunting{
     display:flex;
     justify-content:center;
@@ -92,6 +72,7 @@
     50%{ transform: rotate(3deg); }
   }
   @media (prefers-reduced-motion: reduce){ .bunting span{ animation:none; } }
+
   /* --- header --- */
   header{
     background: var(--negro);
@@ -162,10 +143,7 @@
 
   /* --- hero --- */
   .hero{
-    background:
-      /*radial-gradient(ellipse at 20% 20%, rgba(136, 127, 100, 0.16), transparent 45%),
-     /* radial-gradient(ellipse at 80% 80%, rgba(212,175,55,0.12), transparent 45%),
-      */var(--crema);
+    background: var(--crema);
     color: var(--blanco);
     text-align:center;
     padding: 20px 22px 20px;
@@ -400,6 +378,7 @@
     font-size: 0.8rem;
   }
   footer a{ color: var(--dorado); }
+  .enlace-admin{ margin-top:12px; display:inline-block; font-size:0.75rem; color:#888; }
 </style>
 </head>
 <body>
@@ -451,12 +430,12 @@
       <span>Total</span>
       <span class="monto" id="total-carrito">$0 MXN</span>
     </div>
-      <!-- 🕒 Hora de recogida -->
+    <!-- 🕒 Hora de recogida -->
     <div style="margin-bottom:10px;">
-      <label for="hora-recogida" style="font-family:var(--font-alt); font-size:0.8rem; color:var(--negro); font-weight:600; display:block; margin-bottom:4px;">Hora aproximada de recogida,  Ej: 3:05 a.m </label>
+      <label for="hora-recogida" style="font-family:var(--font-alt); font-size:0.8rem; color:var(--negro); font-weight:600; display:block; margin-bottom:4px;">Hora aproximada de recogida</label>
       <input type="time" id="hora-recogida" style="width:100%; padding:9px; border:1.5px solid var(--negro); border-radius:8px; background:var(--blanco); color:var(--negro); font-family:inherit; font-size:0.85rem;">
     </div>
-      <!-- ✨ NUEVO: Campo para comentarios -->
+    <!-- 📝 Comentarios -->
     <div style="margin-bottom:14px;">
       <label for="notas-pedido" style="font-family:var(--font-alt); font-size:0.8rem; color:var(--negro); font-weight:600; display:block; margin-bottom:4px;">Comentarios o indicaciones</label>
       <textarea id="notas-pedido" placeholder="Ej: Deseo una piña colada sin licor..." style="width:100%; min-height:70px; padding:10px; border:1.5px solid var(--negro); border-radius:8px; background:var(--blanco); color:var(--negro); font-family:inherit; font-size:0.85rem; resize:vertical;"></textarea>
@@ -473,47 +452,43 @@
 
 <footer>
   <p>Aceary Solutions S.A. de C.V. — Pedidos: <a href="tel:9988284867">9988284867</a> · <a href="mailto:familiaenlinea20@gmail.com">familiaenlinea20@gmail.com</a></p>
-  
   <h2 class="" style="color: red;">"NO CONTAMOS CON ENVIO A DOMICILIO"</h2>
+  <a href="pedidos.html" class="enlace-admin">🔐 Ver lista de pedidos (solo personal)</a>
 </footer>
 
 <script>
-// ============ Configuración: EDITA AQUÍ nombres, ingredientes, presentación, foto y precios ============
-// En "imagen" pon el nombre del archivo de foto (ej. "pina-colada.jpg"). Si no existe o no carga,
-// se muestra automáticamente un ícono de respaldo, así que nunca queda un hueco roto.
+// ============ Configuración ============
 const MENU = [
 { id: "pina-colada", nombre: "Piña Colada", imagen: "coc1.png",
 ingredientes: ["Ron blanco", "Jugo de piña", "Crema de coco", "Hielo"],
-presentacion: "Piña · Cerecita", precio: 35 },
+presentacion: "Piña · Cerecita",desc: "", precio: 35 },
 
 { id: "pina-colada-vodka", nombre: "Palomo Tamarindo Picante", imagen: "coc2.png",
 ingredientes: ["Vodka de tamarindo picoso", "Refresco de toronja", "Jugo de limon", "Hielo"],
-presentacion: "Rodaja de piña", precio: 35 },
+presentacion: "Rodaja de piña", desc: "", precio: 35 },
 
 { id: "tequila-sunrise", nombre: "Tequila Sunrise", imagen: "coc3.png",
 ingredientes: ["Tequila", "Jugo de naranja", "Granadina", "Hielo"],
-presentacion: "Sin escarchado · Rodaja de naranja", precio: 35 },
+presentacion: "Sin escarchado · Rodaja de naranja",desc: "", precio: 35 },
 
 { id: "blue-caribbean", nombre: "Blue Caribbean", imagen: "coc6.png",
 ingredientes: ["Ron blanco", "Curazao azul", "Refresco de limón", "Limón", "Hielo"],
-presentacion: "Escarchado de azúcar · Rodaja de limón", precio: 35 },
+presentacion: "Escarchado de azúcar · Rodaja de limón", desc: "",precio: 35 },
 
 { id: "paloma", nombre: "Paloma", imagen: "coc4.png",
 ingredientes: ["Tequila", "Refresco de toronja", "Limón", "Hielo"],
-presentacion: "Escarchado de sal · Rodaja de limón - Precio anterior ($35)", precio: 25 },
+presentacion: "Escarchado de sal · Rodaja de limón",  desc: "$35", precio: 25 },
 
 { id: "charro-negro", nombre: "Charro Negro", imagen: "coc5.png",
 ingredientes: ["Tequila", "Refresco de cola", "Limón", "Hielo"],
-presentacion: "Escarchado de sal (opcional) · Limón -Precio anterior ($35)", precio: 25 }
-
-
-
+presentacion: "Escarchado de sal (opcional) · Limón", desc: "$35", precio: 25 }
 ];
 
-const WHATSAPP_NUM = "529988284867"; // 52 = México, sin '+'
+const WHATSAPP_NUM = "529988284867";
 const CORREO_PEDIDOS = "familiaenlinea20@gmail.com";
 
-let carrito = {}; // { id: cantidad }
+let carrito = {};
+
 function pintarBunting(contenedorId, cantidad){
   const el = document.getElementById(contenedorId);
   el.innerHTML = Array.from({length: cantidad}).map(() => "<span></span>").join("");
@@ -535,7 +510,7 @@ function pintarMenu(){
         <ul>${c.ingredientes.map(i => `<li>${i}</li>`).join("")}</ul>
         <div class="presentacion"><i class="fa-solid fa-champagne-glasses"></i> ${c.presentacion}</div>
         <div class="precio-row">
-          <span class="precio">$${c.precio}</span>
+          <span class="precio">$${c.precio}</span><strike><span class="precio">${c.desc}</span></strike>
           <div class="qty-control">
             <button type="button" onclick="cambiarCantidad('${c.id}', -1)">−</button>
             <span id="cant-${c.id}">0</span>
@@ -624,7 +599,10 @@ function construirResumenPedido(){
     return `${c.nombre} × ${carrito[id]} — $${subtotal}`;
   });
   return { lineas, total };
-}function enviarPorWhatsApp(){
+}
+
+// Enviar por WhatsApp + guardar en lista
+function enviarPorWhatsApp(){
   const { lineas, total } = construirResumenPedido();
   const hora = document.getElementById("hora-recogida").value.trim();
   const notas = document.getElementById("notas-pedido").value.trim();
@@ -633,9 +611,20 @@ function construirResumenPedido(){
   if(hora) mensaje += `\n\n🕒 Hora de recogida: ${hora}`;
   if(notas) mensaje += `\n\n📝 Comentarios:\n${notas}`;
 
+  // Guardar en lista de pedidos
+  const pedidos = JSON.parse(localStorage.getItem("pedidos_barra") || "[]");
+  pedidos.push({
+    id: Date.now().toString(),
+    fecha: new Date().toLocaleString("es-MX"),
+    texto: mensaje,
+    estado: "pendiente"
+  });
+  localStorage.setItem("pedidos_barra", JSON.stringify(pedidos));
+
   window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(mensaje)}`, "_blank", "noopener");
 }
 
+// Enviar por correo + guardar en lista
 function enviarPorCorreo(){
   const estado = document.getElementById("estado-envio");
   const { lineas, total } = construirResumenPedido();
@@ -646,23 +635,24 @@ function enviarPorCorreo(){
   if(hora) cuerpo += `\n\n🕒 Hora de recogida: ${hora}`;
   if(notas) cuerpo += `\n\n📝 Comentarios:\n${notas}`;
 
-  estado.textContent = "Enviando...";
-  fetch(`https://formsubmit.co/ajax/${CORREO_PEDIDOS}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify({
-      _subject: "Nuevo pedido de cócteles — Barra Aceary",
-      pedido: cuerpo
-    })
-  })
-  .then(r => r.ok ? estado.textContent = "¡Pedido enviado por correo! Te confirmamos pronto." : Promise.reject())
-  .catch(() => {
-    window.location.href = `mailto:${CORREO_PEDIDOS}?subject=${encodeURIComponent("Nuevo pedido de cócteles")}&body=${encodeURIComponent(cuerpo)}`;
-    estado.textContent = "Abrimos tu correo para completar el envío.";
+  estado.textContent = "✅ Pedido registrado";
+
+  // Guardar en lista de pedidos
+  const pedidos = JSON.parse(localStorage.getItem("pedidos_barra") || "[]");
+  pedidos.push({
+    id: Date.now().toString(),
+    fecha: new Date().toLocaleString("es-MX"),
+    texto: cuerpo,
+    estado: "pendiente"
   });
+  localStorage.setItem("pedidos_barra", JSON.stringify(pedidos));
+
+  setTimeout(() => {
+    window.location.href = `mailto:${CORREO_PEDIDOS}?subject=${encodeURIComponent("Nuevo pedido de cócteles")}&body=${encodeURIComponent(cuerpo)}`;
+  }, 600);
 }
 
-// --- panel del carrito ---
+// Carrito
 const overlay = document.getElementById("overlay-carrito");
 const panel = document.getElementById("panel-carrito");
 function abrirCarrito(){ overlay.classList.add("abierto"); panel.classList.add("abierto"); }
